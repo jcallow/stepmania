@@ -1460,6 +1460,7 @@ void ScreenGameplay::StartPlayingSong( float fMinTimeToNotes, float fMinTimeToMu
 	m_pSoundMusic->SetProperty( "AccurateSync", true );
 
 	RageSoundParams p;
+	p.SoundType = RageSoundParams::M_SONG;
 	p.m_fSpeed = GAMESTATE->m_SongOptions.GetCurrent().m_fMusicRate;
 	p.StopMode = RageSoundParams::M_CONTINUE;
 

@@ -173,11 +173,35 @@ void RageSoundManager::AddLoadedSound( const RString &sPath_, RageSoundReader_Pr
 }
 
 static Preference<float> g_fSoundVolume( "SoundVolume", 1.0f );
+static Preference<float> g_fSongVolume( "SongVolume", 1.0f );
+static Preference<float> g_fAnnouncerVolume( "AnnouncerVolume", 1.0f );
+static Preference<float> g_fSoundEffectsVolume( "SoundEffectsVolume", 1.0f );
 
 void RageSoundManager::SetMixVolume()
 {
 	g_SoundManMutex.Lock(); /* lock for access to m_fMixVolume */
 	m_fMixVolume = clamp( g_fSoundVolume.Get(), 0.0f, 1.0f );
+	g_SoundManMutex.Unlock(); /* finished with m_fMixVolume */
+}
+
+void RageSoundManager::SetSongVolume()
+{
+	g_SoundManMutex.Lock(); /* lock for access to m_fMixVolume */
+	m_fSongVolume = clamp( g_fSongVolume.Get(), 0.0f, 1.0f );
+	g_SoundManMutex.Unlock(); /* finished with m_fMixVolume */
+}
+
+void RageSoundManager::SetAnnouncerVolume()
+{
+	g_SoundManMutex.Lock(); /* lock for access to m_fMixVolume */
+	m_fAnnouncerVolume = clamp( g_fAnnouncerVolume.Get(), 0.0f, 1.0f );
+	g_SoundManMutex.Unlock(); /* finished with m_fMixVolume */
+}
+
+void RageSoundManager::SetSoundEffectsVolume()
+{
+	g_SoundManMutex.Lock(); /* lock for access to m_fMixVolume */
+	m_fSoundEffectsVolume = clamp( g_fSoundEffectsVolume.Get(), 0.0f, 1.0f );
 	g_SoundManMutex.Unlock(); /* finished with m_fMixVolume */
 }
 

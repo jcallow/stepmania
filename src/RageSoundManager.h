@@ -30,7 +30,13 @@ public:
 	void Init();
 
 	float GetMixVolume() const { return m_fMixVolume; }
+	float GetSongVolume() const { return m_fSongVolume; }
+	float GetAnnouncerVolume() const { return m_fAnnouncerVolume; }
+	float GetSoundEffectsVolume() const { return m_fSoundEffectsVolume; }
 	void SetMixVolume();
+	void SetSongVolume();
+	void SetAnnouncerVolume();
+	void SetSoundEffectsVolume();
 	float GetVolumeOfNonCriticalSounds() const { return m_fVolumeOfNonCriticalSounds; }
 	void SetVolumeOfNonCriticalSounds( float fVolumeOfNonCriticalSounds );
 
@@ -52,6 +58,9 @@ private:
 
 	/* Prefs: */
 	float m_fMixVolume;
+	float m_fAnnouncerVolume;
+	float m_fSongVolume;
+	float m_fSoundEffectsVolume;
 	float m_fVolumeOfNonCriticalSounds;
 	// Swallow up warnings. If they must be used, define them.
 	RageSoundManager& operator=(const RageSoundManager& rhs);

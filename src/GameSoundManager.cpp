@@ -254,6 +254,7 @@ static void StartMusic( MusicToPlay &ToPlay )
 //		NewMusic->m_Music->Load( ToPlay.m_sFile, false );
 
 		RageSoundParams p;
+		p.SoundType = RageSoundParams::M_SONG;
 		p.m_StartSecond = ToPlay.fStartSecond;
 		p.m_LengthSeconds = ToPlay.fLengthSeconds;
 		p.m_fFadeInSeconds = ToPlay.fFadeInLengthSeconds;
@@ -270,17 +271,17 @@ static void StartMusic( MusicToPlay &ToPlay )
 	g_Playing = NewMusic;
 }
 
-static void DoPlayOnce( RString sPath )
+static void DoPlayOnce( RString sPath, const RageSoundParams *pParams = NULL )
 {
 	/* We want this to start quickly, so don't try to prebuffer it. */
 	RageSound *pSound = new RageSound;
 	pSound->Load( sPath, false );
 
-	pSound->Play(false);
+	pSound->Play(false, pParams);
 	pSound->DeleteSelfWhenFinishedPlaying();
 }
 
-static void DoPlayOnceFromDir( RString sPath )
+static void DoPlayOnceFromDir( RString sPath, const RageSoundParams *pParams = NULL )
 {
 	if( sPath == "" )
 		return;
@@ -299,7 +300,7 @@ static void DoPlayOnceFromDir( RString sPath )
 		return;
 
 	int index = RandomInt( arraySoundFiles.size( ));
-	DoPlayOnce(  sPath + arraySoundFiles[index]  );
+	DoPlayOnce(  sPath + arraySoundFiles[index], pParams  );
 }
 
 static bool SoundWaiting()
@@ -325,11 +326,19 @@ static void StartQueuedSounds()
 	g_Mutex->Unlock();
 
 	for( unsigned i = 0; i < aSoundsToPlayOnce.size(); ++i )
-		if( aSoundsToPlayOnce[i] != "" )
-			DoPlayOnce( aSoundsToPlayOnce[i] );
+		if( aSoundsToPlayOnce[i] != "" ) {
+			RageSoundParams* pParams = new RageSoundParams();
+			pParams->SoundType = RageSoundParams::M_SOUNDEFFECT;
+			DoPlayOnce( aSoundsToPlayOnce[i], pParams );
+		}
 
-	for( unsigned i = 0; i < aSoundsToPlayOnceFromDir.size(); ++i )
-		DoPlayOnceFromDir( aSoundsToPlayOnceFromDir[i] );
+
+	for( unsigned i = 0; i < aSoundsToPlayOnceFromDir.size(); ++i ) {
+		RageSoundParams* pParams = new RageSoundParams();
+		pParams->SoundType = RageSoundParams::M_SOUNDEFFECT;
+		DoPlayOnceFromDir( aSoundsToPlayOnceFromDir[i], pParams );
+	}
+
 
 	for( unsigned i = 0; i < aSoundsToPlayOnceFromAnnouncer.size(); ++i )
 	{
@@ -337,7 +346,9 @@ static void StartQueuedSounds()
 		if( sPath != "" )
 		{
 			sPath = ANNOUNCER->GetPathTo( sPath );
-			DoPlayOnceFromDir( sPath );
+			RageSoundParams* pParams = new RageSoundParams();
+			pParams->SoundType = RageSoundParams::M_ANNOUNCER;
+			DoPlayOnceFromDir( sPath , pParams);
 		}
 	}
 

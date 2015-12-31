@@ -865,6 +865,7 @@ void ScreenManager::ZeroNextUpdate()
 #define PLAY_CRITICAL(snd) \
 { \
 	RageSoundParams p; \
+	p.SoundType = RageSoundParams::M_SOUNDEFFECT; \
 	p.m_bIsCriticalSound = true; \
 	snd.Play(false, &p); \
 }

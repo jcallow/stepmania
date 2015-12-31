@@ -528,6 +528,9 @@ void ChangeVolume( float fDelta )
 	CLAMP( fVol, 0.0f, 1.0f );
 	pRet->Set( fVol );
 	SOUNDMAN->SetMixVolume();
+	SOUNDMAN->SetAnnouncerVolume();
+	SOUNDMAN->SetSongVolume();
+	SOUNDMAN->SetSoundEffectsVolume();
 }
 
 void ChangeVisualDelay( float fDelta )

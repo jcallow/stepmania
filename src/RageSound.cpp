@@ -42,7 +42,7 @@ RageSoundParams::RageSoundParams():
 	m_StartSecond(0), m_LengthSeconds(-1), m_fFadeInSeconds(0),
 	m_fFadeOutSeconds(0), m_Volume(1.0f), m_fAttractVolume(1.0f),
 	m_fPitch(1.0f), m_fSpeed(1.0f), m_StartTime( RageZeroTimer ),
-	StopMode(M_AUTO), m_bIsCriticalSound(false) {}
+	StopMode(M_AUTO), m_bIsCriticalSound(false), SoundType(M_DEFAULT) {}
 
 RageSoundLoadParams::RageSoundLoadParams():
 	m_bSupportRateChanging(false), m_bSupportPan(false) {}
@@ -578,8 +578,30 @@ void RageSound::ApplyParams()
 	m_pSource->SetProperty( "FadeSeconds", m_Param.m_fFadeOutSeconds );
 
 	float fVolume = m_Param.m_Volume * SOUNDMAN->GetMixVolume();
+
+
+	switch( GetSoundType() )
+	{
+		case RageSoundParams::M_DEFAULT:
+			// got lazy
+			fVolume *= SOUNDMAN->GetSoundEffectsVolume();
+			break;
+		case RageSoundParams::M_SOUNDEFFECT:
+			fVolume *= SOUNDMAN->GetSoundEffectsVolume();
+			break;
+		case RageSoundParams::M_SONG:
+			fVolume *= SOUNDMAN->GetSongVolume();
+			break;
+		case RageSoundParams::M_ANNOUNCER:
+			fVolume *= SOUNDMAN->GetAnnouncerVolume();
+			break;
+		default: break;
+	}
+
+
 	if( !m_Param.m_bIsCriticalSound )
 		fVolume *= m_Param.m_fAttractVolume;
+
 	m_pSource->SetProperty( "Volume", fVolume );
 
 	switch( GetStopMode() )
@@ -600,6 +622,11 @@ void RageSound::ApplyParams()
 bool RageSound::SetProperty( const RString &sProperty, float fValue )
 {
 	return m_pSource->SetProperty( sProperty, fValue );
+}
+
+RageSoundParams::SoundType_t RageSound::GetSoundType() const
+{
+	return m_Param.SoundType;
 }
 
 RageSoundParams::StopMode_t RageSound::GetStopMode() const

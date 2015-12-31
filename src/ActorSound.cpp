@@ -14,7 +14,9 @@ void ActorSound::Load( const RString &sPath )
 
 void ActorSound::Play()
 {
-	m_Sound.Play(m_is_action);
+	RageSoundParams *params = new RageSoundParams();
+	params->SoundType = RageSoundParams::M_SOUNDEFFECT;
+	m_Sound.Play(m_is_action, params);
 }
 
 void ActorSound::Pause( bool bPause )

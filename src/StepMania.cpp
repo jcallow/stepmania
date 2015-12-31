@@ -264,6 +264,9 @@ void StepMania::ResetPreferences()
 {
 	PREFSMAN->ResetToFactoryDefaults();
 	SOUNDMAN->SetMixVolume();
+	SOUNDMAN->SetAnnouncerVolume();
+	SOUNDMAN->SetSongVolume();
+	SOUNDMAN->SetSoundEffectsVolume();
 	CheckVideoDefaultSettings();
 	ApplyGraphicOptions();
 }
@@ -1135,6 +1138,9 @@ int sm_main(int argc, char* argv[])
 	SOUNDMAN	= new RageSoundManager;
 	SOUNDMAN->Init();
 	SOUNDMAN->SetMixVolume();
+	SOUNDMAN->SetAnnouncerVolume();
+	SOUNDMAN->SetSongVolume();
+	SOUNDMAN->SetSoundEffectsVolume();
 	SOUND		= new GameSoundManager;
 	BOOKKEEPER	= new Bookkeeper;
 	LIGHTSMAN	= new LightsManager;

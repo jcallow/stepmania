@@ -27,6 +27,7 @@ public:
  *
  * These are normally changed before playing begins,
  * and are constant from then on. */
+
 struct RageSoundParams
 {
 	RageSoundParams();
@@ -52,6 +53,9 @@ struct RageSoundParams
 	/* Optional driver feature: time to actually start playing sounds.
 	 * If zero, or if not supported, the sound will start immediately. */
 	RageTimer m_StartTime;
+
+	// Sound type
+	enum SoundType_t{ M_DEFAULT, M_SONG, M_ANNOUNCER, M_SOUNDEFFECT } SoundType;
 
 	/** @brief How does the sound stop itself, if it does? */
 	enum StopMode_t {
@@ -177,6 +181,8 @@ private:
 
 	bool SetPositionFrames( int frames = -1 );
 	RageSoundParams::StopMode_t GetStopMode() const; // resolves M_AUTO
+
+	RageSoundParams::SoundType_t GetSoundType() const;
 
 	void SoundIsFinishedPlaying(); // called by sound drivers
 
